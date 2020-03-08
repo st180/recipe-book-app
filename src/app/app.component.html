@@ -1,21 +1,165 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
-<router-outlet></router-outlet>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <h1>RecipeBook</h1>
+      <br/>
+        <button type="button" class="btn btn-success btn-block" data-toggle="modal" (click)="resetInputs()" data-target="#formModal">Add Recipe</button>
+        <br/>
+
+<!-- Add Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Add Recipe</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <form name="form" (ngSubmit)="saveRecipe()" class="submit-form">
+                <div>
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="name"
+                      required
+                      [(ngModel)]="recipe.name"
+                      name="name"
+                    />
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="ingredients">Ingredients</label>
+                    <textarea
+                      class="form-control"
+                      id="ingredients"
+                      required
+                      [(ngModel)]="recipe.ingredients"
+                      name="ingredients"
+                    ></textarea>
+                  </div>
+  
+                  <div class="form-group">
+                      <label for="directions">Directions</label>
+                      <textarea
+                        class="form-control"
+                        id="directions"
+                        required
+                        [(ngModel)]="recipe.directions"
+                        name="directions"
+                      ></textarea>
+                    </div>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          <button type="button" (click)="saveRecipe()" data-dismiss="modal" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editFormModal" tabindex="-1" role="dialog" aria-labelledby="editFormModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Edit Recipe</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+            <form name="editform" (ngSubmit)="submitEditedRecipe()" class="submit-form">
+                <input type="hidden" #editformid name="id">
+                <div>
+                  <div class="form-group">
+                    <label for="name">Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      [(ngModel)]="recipe.name"
+                      name="name"
+                      #editformname
+                    />
+                  </div>
+              
+                  <div class="form-group">
+                    <label for="ingredients">Ingredients</label>
+                    <textarea
+                      class="form-control"
+                      required
+                      [(ngModel)]="recipe.ingredients"
+                      name="ingredients"
+                      #editformingredients
+                    ></textarea>
+                  </div>
+  
+                  <div class="form-group">
+                      <label for="directions">Directions</label>
+                      <textarea
+                        class="form-control"
+                        required
+                        [(ngModel)]="recipe.directions"
+                        name="directions"
+                        #editformdirections
+                      ></textarea>
+                    </div>
+                </div>
+              </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          <button type="button" (click)="submitEditedRecipe()" data-dismiss="modal" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+        
+
+
+            <div *ngFor="let recipe of recipelist">
+              <p></p><div class="card card-body bg-light" ><h4 style="text-align: center;">{{recipe.name}}</h4>
+              
+              
+                  <button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" 
+                  attr.data-target="#{{recipe.id}}" aria-expanded="false" attr.aria-controls="{{recipe.id}}">
+                  <i class="fas fa-sort-down"></i></button>
+                  <div class="collapse" [id]="recipe.id">
+                      <div class="well">
+                        <br/>
+                        <strong>Ingredients: </strong><p></p><div>{{recipe.ingredients}}</div>
+                        
+                        <p></p><strong>Directions: </strong><p></p><div>{{recipe.directions}}</div>
+                        <p></p><button class="btn btn-secondary"
+                        #editrecipe 
+                        data-toggle="modal" 
+                        [attr.data-recipeid]="recipe.id"
+                        [attr.data-recipename]="recipe.name"
+                        [attr.data-ingredients]="recipe.ingredients"
+                        [attr.data-directions]="recipe.directions"
+                        data-target="#editFormModal"
+                        (click)="editRecipe(editrecipe.dataset.recipename, editrecipe.dataset.ingredients,
+                        editrecipe.dataset.directions, editrecipe.dataset.recipeid)">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                        &nbsp;<button class="btn btn-danger" #deleterecipe
+                        [attr.data-recipeid]="recipe.id" (click)="deleteRecipe(deleterecipe.dataset.recipeid)">
+                        <i class="fas fa-trash-alt"></i></button>
+                      </div>
+                    </div>
+                
+                </div>
+
+              
+              
+            </div>
+            <br/>
+            <br/>
+          </div>
+            <div class="col-sm-2"></div>
+    </div>
+  </div>
